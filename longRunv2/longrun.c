@@ -1,57 +1,51 @@
 #include <stdio.h>
-int main(int argc, char **argv){
+
+int main(int argc, char* argv[]){
 	//initialize variables
 	char currentChar ='\0', prevChar = '\0';
-	int currentRunLength=0, longHrun=0, longTrun=0;
+	int currentRunLength=0, maxHrun=0, maxTrun=0;
+	prevChar = getc(stdin);
+	printf("P:%c\n", prevChar);
 
 	while (!feof(stdin)){
+		//while not at the end of a file...
 		currentChar = getc(stdin);
-		printf("C: %c\n",currentChar);
 
-		if (currentChar !='T'&& currentChar !='H'){
-			prevChar = currentChar;	
-			printf("P: %c\n",prevChar);
+		if (currentChar !='T' && currentChar !='H'){
 			continue;
 		}
 
-		else if (currentChar = prevChar && currentChar == 'H'){
-			if (currentRunLength > longHrun){
-				longHrun = ++longHrun;
-				currentRunLength = ++currentRunLength;
+		if (currentChar == prevChar && currentChar == 'H'){
+			if (currentRunLength > maxHrun){
+				maxHrun++;
+				currentRunLength++;
 			}
-			prevChar = currentChar;	
-			printf("P: %c\n",prevChar);
-			continue;
 		}
 
-		else if (currentChar = prevChar && currentChar == 'T'){
-			if (currentRunLength > longTrun){
-				longTrun = ++longTrun;
-				currentRunLength = ++currentRunLength;
+		if (currentChar == prevChar && currentChar == 'T'){
+			if (currentRunLength > maxTrun){
+				maxTrun++;
+				currentRunLength++;
 			}
-			prevChar = currentChar;	
-			printf("P: %c\n",prevChar);
-			continue;
 		}
 
-		else {
+		if (currentChar != prevChar){
 			currentRunLength = 1;
-			prevChar = currentChar;	
-			printf("P: %c\n",prevChar);		
-			continue;
 		}
+		prevChar = currentChar;
+		printf("P:%c\n", prevChar);
 	}	
 
-	if (longTrun == longHrun){
-		printf("B: %d\n", longTrun);
+	if (maxTrun == maxHrun){
+		printf("B: %d\n", maxTrun);
 	}
 
-	if (longTrun > longHrun){
-		printf("T: %d\n", longTrun);
+	if (maxTrun > maxHrun){
+		printf("T: %d\n", maxTrun);
 	}
 
-	if (longTrun < longHrun){
-		printf("H: %d\n", longHrun);
+	if (maxTrun < maxHrun){
+		printf("H: %d\n", maxHrun);
 	}
 
 	return 0;
